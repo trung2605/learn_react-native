@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import { Button, StyleSheet, Text, View, TextInput, ScrollView, FlatList } from 'react-native';
 import {useState} from 'react';
 
 export default function App() {
@@ -13,61 +13,31 @@ export default function App() {
     {id: 6, name: 'Vu Thi F', age: 25},
   ]);
   
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
   
-  //function thêm sinh viên
-  const handleAddStudent = () => {
-    if (name.trim() === '' || age.trim() === '') {
-      alert('Vui lòng nhập đầy đủ thông tin');
-      return;
-    }
-    
-    const newStudent = {
-      id: students.length + 1, 
-      name: name.trim(), 
-      age: parseInt(age)
-    };
-    
-    setStudents([...students, newStudent]);
-    setName('');
-    setAge('');
-  };
-  
-  //jsx
+  //jsx 
   return (
     <View style={styles.container}>
-      <Text style={{fontSize: 24, fontWeight: 'bold'}}>Danh sach sinh vien</Text>
-      {students.map((student) => {
-        return (
-          <ScrollView key={student.id} style={{marginTop: 20, padding: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 5}}>
-            <Text style={{fontSize: 18}}>Name: {student.name}</Text>
-            <Text style={{fontSize: 18}}>Age: {student.age}</Text>
-          </ScrollView>
-        );
-      })}
+      <Text>Danh sách sinh viên</Text>
 
-      {/* Nhập tên sinh viên */}
-      <TextInput 
-        placeholder="Nhap ten sinh vien"
-        style={{height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 20, paddingHorizontal: 10}}
-        value={name}
-        onChangeText={setName}
+      {/* Kiểu truyền data thẳng */}
+      <FlatList
+        numColumns={2}
+        data={students}
+        keyExtractor={(item) => item.id.toString()} //nếu không có keyExtractor sẽ bị cảnh báo
+        renderItem={(data) => (
+          <Text style={{flex: 1}}>{data.item.name} - {data.item.age} tuổi</Text>
+        )}
       />
-      
-      {/* Nhập tuổi sinh viên */}
-      <TextInput 
-        placeholder="Nhap tuoi sinh vien"
-        style={{height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 10, paddingHorizontal: 10}}
-        value={age}
-        onChangeText={setAge}
-        keyboardType="numeric"
-      />
-      
-      {/* Nút thêm sinh viên */}
-      <Button 
-        title="Them sinh vien"
-        onPress={handleAddStudent}
+
+      {/* kiểu truyền data object destructuring */}
+      <FlatList
+        data={students}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({item}) => (
+          <View style={{marginTop: 10}}>
+            <Text>{item.name} - {item.age} tuổi</Text>
+          </View>
+        )}
       />
     </View>
   );
