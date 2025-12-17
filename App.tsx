@@ -35,7 +35,7 @@ export default function App() {
       // Dùng để tự động xuống hàng
         multiline={true}
         autoCapitalize='characters'
-        inputMode='email'
+        keyboardType='numeric'
         style={{
           height: 40,
           borderColor: 'gray',
@@ -46,6 +46,7 @@ export default function App() {
         }}
         placeholder="Type here to change title"
         onChangeText={text => setName(text)}
+        maxLength={2}
       />
       <View>  
         {/* Được thực hiện khi nhấn nút (tab thay vì click) */}
