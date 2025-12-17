@@ -1,60 +1,74 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
+import { Button, StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import {useState} from 'react';
 
 export default function App() {
-  //state
-  //Tự động đoán kiểu dữ liệu
-  //Có thể ép kiểu dữ liệu với useState <type>
-  const [title, setTitle] = useState<string>('Hello World! React Native');
-  const [count, setCount] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [name,setName] = useState<string>('Alice');
-  const [age,setAge] = useState<number>(25);
-
-  const [userInfo, setUserInfo] = useState<{
-    name: string;
-    age: number;
-  }>({
-    name: 'John Doe',
-    age: 30,
-  });
-
+  
+  const [students, setStudents] = useState([
+    {id: 1, name: 'Nguyen Van A', age: 20},
+    {id: 2, name: 'Tran Thi B', age: 21},
+    {id: 3, name: 'Le Van C', age: 22},
+    {id: 4, name: 'Pham Thi D', age: 23},
+    {id: 5, name: 'Hoang Van E', age: 24},
+    {id: 6, name: 'Vu Thi F', age: 25},
+  ]);
+  
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  
+  //function thêm sinh viên
+  const handleAddStudent = () => {
+    if (name.trim() === '' || age.trim() === '') {
+      alert('Vui lòng nhập đầy đủ thông tin');
+      return;
+    }
+    
+    const newStudent = {
+      id: students.length + 1, 
+      name: name.trim(), 
+      age: parseInt(age)
+    };
+    
+    setStudents([...students, newStudent]);
+    setName('');
+    setAge('');
+  };
+  
   //jsx
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{title}</Text>
-      <Text>Count: {count}</Text>
-      <Text>Loading: {isLoading ? 'Yes' : 'No'}</Text>
-      <Text>User Name: {userInfo.name}</Text>
-      <Text>User Age: {userInfo.age}</Text>
-      <Text>{JSON.stringify(userInfo)}</Text>
-      <Text>Name: {name}</Text>
-      <TextInput
-      // Dùng để tự động xuống hàng
-        multiline={true}
-        autoCapitalize='characters'
-        keyboardType='numeric'
-        style={{
-          height: 40,
-          borderColor: 'gray',
-          borderWidth: 1,
-          width: '80%',
-          marginBottom: 20,
-          paddingHorizontal: 10,
-        }}
-        placeholder="Type here to change title"
-        onChangeText={text => setName(text)}
-        maxLength={2}
-      />
-      <View>  
-        {/* Được thực hiện khi nhấn nút (tab thay vì click) */}
-        <Button title="Click Me" onPress={() => setTitle("con cac")}></Button> 
+      <Text style={{fontSize: 24, fontWeight: 'bold'}}>Danh sach sinh vien</Text>
+      {students.map((student) => {
+        return (
+          <ScrollView key={student.id} style={{marginTop: 20, padding: 10, borderWidth: 1, borderColor: '#ccc', borderRadius: 5}}>
+            <Text style={{fontSize: 18}}>Name: {student.name}</Text>
+            <Text style={{fontSize: 18}}>Age: {student.age}</Text>
+          </ScrollView>
+        );
+      })}
 
-        {/* Trick use arrow function to avoid immediate execution */}
-        <Button color={"red"} title="Another Button" onPress={() => alert("Button Pressed")}></Button>
-      </View>
+      {/* Nhập tên sinh viên */}
+      <TextInput 
+        placeholder="Nhap ten sinh vien"
+        style={{height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 20, paddingHorizontal: 10}}
+        value={name}
+        onChangeText={setName}
+      />
+      
+      {/* Nhập tuổi sinh viên */}
+      <TextInput 
+        placeholder="Nhap tuoi sinh vien"
+        style={{height: 40, borderColor: 'gray', borderWidth: 1, marginTop: 10, paddingHorizontal: 10}}
+        value={age}
+        onChangeText={setAge}
+        keyboardType="numeric"
+      />
+      
+      {/* Nút thêm sinh viên */}
+      <Button 
+        title="Them sinh vien"
+        onPress={handleAddStudent}
+      />
     </View>
   );
 }
@@ -63,15 +77,10 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 20,
+    paddingVertical: 40,
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'pink',
   },
 });
 
