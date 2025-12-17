@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View, TextInput, ScrollView, FlatList } from 'react-native';
+import { Button, StyleSheet, Text, View, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { CheckBox } from '@rneui/themed';
 
 interface TodoItem {
   id: number;
@@ -10,6 +11,7 @@ interface TodoItem {
 export default function App() {
 
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
+  const [completedList, setCompletedList] = useState<TodoItem[]>([]);
   const [todoInput, setTodoInput] = useState<string>('');
 
   function handleAddTodo() {
@@ -23,6 +25,13 @@ export default function App() {
     };
     setTodoList([...todoList, newTodo]);
     setTodoInput('');
+  }
+
+  function handleDeleteTodo(id: number) {
+    // Giữ lại các phần tử không có id trùng với id được truyền vào
+    const updatedTodoList = todoList.filter(todo => todo.id !== id);
+    setTodoList(updatedTodoList);
+    setCompletedList([...completedList, ...todoList.filter(todo => todo.id === id)]);
   }
 
   return (
@@ -44,7 +53,38 @@ export default function App() {
         <FlatList
           data={todoList}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => <Text style={styles.todoItem}>{item.title}</Text>}
+          renderItem={({ item }) => 
+            <TouchableOpacity >  
+              <View style={styles.todoItemContainer}>
+                <Text style={styles.todoItem}>{item.title}</Text>
+                <CheckBox
+                  title='Delete'
+                  checked={false}
+                  onPress={() => handleDeleteTodo(item.id)}
+                />
+              </View>
+            </TouchableOpacity>
+        }
+        ></FlatList>
+      </View>
+
+        {/* List completed item */}
+      <View style={{marginTop: 20}}>
+        <Text style={styles.label}>List-Completed item</Text>
+        <FlatList
+          data={completedList}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => 
+            <TouchableOpacity >
+              <View style={styles.todoItemContainer}>
+                <Text style={styles.todoItem}>{item.title}</Text>
+                <CheckBox
+                  title={item.title}
+                  checked={true}
+                />
+              </View>
+            </TouchableOpacity>
+        }
         ></FlatList>
       </View>
     </View>
@@ -71,6 +111,12 @@ const styles = StyleSheet.create({
     borderColor: '#333',
     padding: 10,
     marginBottom: 10,
+  },
+  todoItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
   },
   todoItem: {
     padding: 10,
