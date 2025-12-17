@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, Text, View, TextInput, ScrollView, FlatList, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import { useState } from 'react';
 import { CheckBox } from '@rneui/themed';
+import { TouchableWithoutFeedback } from 'react-native';
+import BookList from './components/book.list';
 
 interface TodoItem {
   id: number;
@@ -30,64 +32,75 @@ export default function App() {
   function handleDeleteTodo(id: number) {
     // Giữ lại các phần tử không có id trùng với id được truyền vào
     const updatedTodoList = todoList.filter(todo => todo.id !== id);
+    Alert.alert('Completed', 'You have completed this task.');
     setTodoList(updatedTodoList);
     setCompletedList([...completedList, ...todoList.filter(todo => todo.id === id)]);
   }
 
+  
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Hello React Native</Text>
+    <TouchableWithoutFeedback onPress={() => {
+      Keyboard.dismiss()
+      }}>
+      {/* TouchableWithoutFeedback supports only one child. */
+      // => wrap all components inside a single View
+      }
+      <View style={styles.container}>
+        <Text style={styles.heading}>Hello React Native</Text>
 
-      {/* Form */}
-      <View>
-        <Text style={styles.label}>Input item</Text>
-        <TextInput style={styles.input} placeholder='Input item' value={todoInput} onChangeText={setTodoInput}></TextInput>
-        <Button title='Add'
-          onPress={handleAddTodo}
-        ></Button>
+        {/* Form */}
+        <View>
+          <Text style={styles.label}>Input item</Text>
+          <TextInput style={styles.input} placeholder='Input item' value={todoInput} onChangeText={setTodoInput}></TextInput>
+          <Button title='Add'
+            onPress={handleAddTodo}
+          ></Button>
+        </View>
+
+        {/* List to-do */}
+        <View>
+          <Text style={styles.label}>List-To-do</Text>
+          <FlatList
+            data={todoList}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => 
+              <TouchableOpacity >  
+                <View style={styles.todoItemContainer}>
+                  <Text style={styles.todoItem}>{item.title}</Text>
+                  <CheckBox
+                    checked={false}
+                    onPress={() => handleDeleteTodo(item.id)}
+                  />
+                </View>
+              </TouchableOpacity>
+          }
+          ></FlatList>
+        </View>
+
+          {/* List completed item */}
+        <View style={{marginTop: 20}}>
+          <Text style={styles.label}>List-Completed item</Text>
+          <FlatList
+            data={completedList}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => 
+              <TouchableOpacity >
+                <View style={styles.todoItemContainer}>
+                  <Text style={styles.todoItem}>{item.title}</Text>
+                  <CheckBox
+                    checked={true}
+                  />
+                </View>
+              </TouchableOpacity>
+          }
+          ></FlatList>
+        </View>
+        <BookList/>
       </View>
 
-      {/* List to-do */}
-      <View>
-        <Text style={styles.label}>List-To-do</Text>
-        <FlatList
-          data={todoList}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => 
-            <TouchableOpacity >  
-              <View style={styles.todoItemContainer}>
-                <Text style={styles.todoItem}>{item.title}</Text>
-                <CheckBox
-                  title='Delete'
-                  checked={false}
-                  onPress={() => handleDeleteTodo(item.id)}
-                />
-              </View>
-            </TouchableOpacity>
-        }
-        ></FlatList>
-      </View>
-
-        {/* List completed item */}
-      <View style={{marginTop: 20}}>
-        <Text style={styles.label}>List-Completed item</Text>
-        <FlatList
-          data={completedList}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => 
-            <TouchableOpacity >
-              <View style={styles.todoItemContainer}>
-                <Text style={styles.todoItem}>{item.title}</Text>
-                <CheckBox
-                  title={item.title}
-                  checked={true}
-                />
-              </View>
-            </TouchableOpacity>
-        }
-        ></FlatList>
-      </View>
-    </View>
+      
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -115,7 +128,7 @@ const styles = StyleSheet.create({
   todoItemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    // alignItems: '',
     paddingHorizontal: 10,
   },
   todoItem: {
