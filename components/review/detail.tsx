@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
   }
 });
 
-const DetailScreen = () => {
+const DetailScreen = ({ navigation }: any) => {
   return (
-    <View>
+    <View style={{ padding: 20 }}>
         <Text style={{fontSize: 24, fontWeight: 'bold'}}>Welcome to the Review Detail Screen</Text>
         <Text style={styles.review}>This is where users can see the details of their review.</Text>
     </View>

@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const AboutScreen = () => {
+const AboutScreen = ({ navigation }: any) => {
   return (
-    <View>
-      <Text style={[styles.review, globalStyles.globalFontFamily, { color: globalStyles.colorPrimary }]}>Welcome to the Review About Screen</Text>
+    <View style={{ padding: 20 }}>
+      <Text style={styles.review}>Welcome to the Review About Screen</Text>
       <Text>This is where users can learn more about the review process.</Text>
     </View>
   );
