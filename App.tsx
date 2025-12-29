@@ -7,6 +7,7 @@ import DetailScreen from './components/review/detail';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { OPEN_SANS_FONT } from './util/const';
 
 
 
@@ -16,7 +17,8 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   // Use `useFonts` only if you can't use the config plugin.
   const [loaded, error] = useFonts({
-   'trungle': require('./assets/fonts/OpenSans-Regular.ttf'),
+   [OPEN_SANS_FONT]: require('./assets/fonts/OpenSans-Regular.ttf'),
+   // Add other font variants if needed
   });
 
   useEffect(() => {
