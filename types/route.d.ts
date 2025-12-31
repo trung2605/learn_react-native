@@ -1,8 +1,10 @@
+import { name } from './../node_modules/ci-info/index.d';
 //.d viết tắt của data type
 
-type RootStackParamList = {
+type RootStackParamList = { 
+    //screen name: parameter type
   Home: undefined;
-  Detail: undefined;
+  Detail: {id: number, title: String, star: number} | undefined;
 };
 
 declare global {
