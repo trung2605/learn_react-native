@@ -13,6 +13,8 @@ const HomeScreen = () => {
   // Initialize navigation -> use react hook 
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
 
+
+
   const [reviews, setReviews] = React.useState<Review[]>([
     { id: 1, title: 'Review 1', star: 5 },
     { id: 2, title: 'Review 2', star: 4 },
