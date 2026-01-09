@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { OPEN_SANS_FONT } from '../../util/const';
-import { globalStyles } from '../../util/const';
+import { OPEN_SANS_FONT } from '../../utils/const';
+import { globalStyles } from '../../utils/const';
 
 const styles = StyleSheet.create({
   review: {

@@ -1,14 +1,12 @@
-import { name } from './../node_modules/ci-info/index.d';
-//.d viết tắt của data type
 
-type RootStackParamList = { 
-    //screen name: parameter type
-  Home: undefined;
-  Detail: {id: number, title: String, star: number} | undefined;
+type RootStackParamList = {
+    home: undefined;
+    "review-detail": { id: number; title: string; star: number } | undefined;
+    // Feed: { sort: 'latest' | 'top' } | undefined;
 };
-
 declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
-  }
+    namespace ReactNavigation {
+        interface RootParamList extends RootStackParamList { }
+    }
 }
+declare module "*.png"

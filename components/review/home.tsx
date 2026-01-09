@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native'; // 1. Import Hook
-import { RootStackParamList } from '../../types/route';
 interface Review {
   id: number;
   title: string;
@@ -12,9 +11,6 @@ const HomeScreen = () => {
 
   // Initialize navigation -> use react hook 
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
-
-
-
   const [reviews, setReviews] = React.useState<Review[]>([
     { id: 1, title: 'Review 1', star: 5 },
     { id: 2, title: 'Review 2', star: 4 },
@@ -32,7 +28,7 @@ const HomeScreen = () => {
             renderItem={({ item }) => (
               <TouchableOpacity
               // Navigate to Detail screen with parameters (move to route.d.ts to define parameter types)
-                onPress={() => navigation.navigate('Detail', { id: item.id, title: item.title, star: item.star })}
+                onPress={() => navigation.navigate('review-detail', { id: item.id, title: item.title, star: item.star })}
               >
                 <View style={styles.reviewItem}>
                   <Text style={styles.reviewTitle}>{item.title}</Text>
