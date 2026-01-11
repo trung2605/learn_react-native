@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native'; // 1. Import Hook
+import CreateModal from './create.modal';
 interface Review {
   id: number;
   title: string;
@@ -17,10 +18,12 @@ const HomeScreen = () => {
     { id: 3, title: 'Review 3', star: 3 },
   ]);
 
+  const [modalVisible, setModalVisible] = React.useState(false); //ban đầu modal đóng
+
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Review List</Text>
-
+        <Button title="Add Review" onPress={() => setModalVisible(true)} />
         <View>
           <FlatList
             data={reviews}
@@ -38,6 +41,8 @@ const HomeScreen = () => {
             )}
           />
         </View>
+
+        <CreateModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </View>
   );
 }
@@ -89,3 +94,5 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
+
