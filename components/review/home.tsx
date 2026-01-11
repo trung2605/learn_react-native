@@ -19,6 +19,9 @@ const HomeScreen = () => {
   ]);
 
   const [modalVisible, setModalVisible] = React.useState(false); //ban đầu modal đóng
+  const addNew = (review: Review) => {
+    setReviews([...reviews, review])
+  }
 
   return (
     <View style={styles.container}>
@@ -42,7 +45,7 @@ const HomeScreen = () => {
           />
         </View>
 
-        <CreateModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <CreateModal modalVisible={modalVisible} setModalVisible={setModalVisible} addNew={addNew}/>
     </View>
   );
 }
